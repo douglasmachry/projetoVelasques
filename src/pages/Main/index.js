@@ -50,31 +50,35 @@ class Main extends Component {
     //agrupa Compras pela propriedade "cliente"
     var listaAgrupadaPorCliente = compras.groupBy('cliente');
 
+
+    //para cada registro de cliente, será calculado o valor total em compras e será inserido na array com a chave "totalCompras"
     for (var cpf in listaAgrupadaPorCliente) {
       var comprasPorCPF = listaAgrupadaPorCliente[cpf];
 
       var totalCompras = 0;
-      var pontosFidelidade = 0;
       comprasPorCPF.map(compra => (
-        totalCompras += compra.valorTotal,
-        pontosFidelidade++
+        totalCompras += compra.valorTotal
       ))
+      
+      //recupera os dados do cliente que realizou a compra, para inserir o nome e CPF na array
       clientes.filter(nome => this.parseCPF(nome.cpf) == cpf)
         .map(filtroCliente => (
           comprasPorCPF["nomeCliente"] = filtroCliente.nome,
           comprasPorCPF["cpf"] = String(filtroCliente.cpf)));
       totalCompras = Number(totalCompras.toFixed(2))
       comprasPorCPF["totalCompras"] = totalCompras
-      comprasPorCPF["pontosFidelidade"] = pontosFidelidade
 
       listaOrdenadaPorCompra.push(comprasPorCPF)
     }
 
+    //ordenar a lista de compras pelo valor total em compras
     listaOrdenadaPorCompra.sort((a, b) => b.totalCompras - a.totalCompras);
 
     return listaOrdenadaPorCompra;
   }
 
+
+  //Verificar o histórico de determinado cliente e recomendar um vinho
   recomendarVinho(cliente) {
     var listaVinhos = [];
     var maior = -Infinity;
@@ -87,6 +91,19 @@ class Main extends Component {
       "pais",
       "categoria"
     ]
+
+    /*
+      Percorre todas as compras do cliente e contabiliza os dados de compras já realizadas, conforme a variável "dadosPesquisa" acima. 
+      Esta função retorna um array conforme abaixo:
+
+      listaVinhos[
+        categoria:[categoria:qtd, ...],
+        produto:[produto:qtd, ...],
+        ano: [ano:qtd, ...],
+        varidedade: [variedade:qtd, ...],
+        pais: [pais:qtd, ...]
+      ]
+    */
     cliente.map(function (compras) {
       compras.itens.map(function (item) {
         for (var i in item) {
@@ -98,14 +115,13 @@ class Main extends Component {
               listaVinhos[i][item[i]] = (listaVinhos[i][item[i]] || 0) + 1
             }
           }
-
         }
-
       });
     })
+
+    //Percorre os dados já contabilizados e retorna uma informação do produto mais comprado pelo cliente, neste caso estou retornando somente o nome do produto comprado
     obj = listaVinhos.produto;
     for (var prop in obj) {
-      // ignorar propriedades herdadas
       if (obj.hasOwnProperty(prop)) {
         if (obj[prop] > maior) {
           maior = obj[prop];

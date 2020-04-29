@@ -7,7 +7,7 @@ export const Container = styled.aside`
   align-items: center;
   width: 100px;
   height: 100%;
-  background-image: linear-gradient(to bottom right, #009cde, #0073cc);
+  background-image: linear-gradient(to bottom right, #742f37, #3a181c);
   flex-direction: column;
 
   transition: all 0.2s ease 0s;

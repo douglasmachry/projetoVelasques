@@ -8,17 +8,15 @@ import GlobalStyle, { Container } from './styles';
 
 
 class App extends Component {
-
-
   render() {
     return (
       <BrowserRouter>
-      <GlobalStyle />
-      <Container>
-        <Sidebar />
-        <Routes />
-      </Container>
-    </BrowserRouter>
+        <GlobalStyle />
+        <Container>
+          <Sidebar />
+          <Routes />
+        </Container>
+      </BrowserRouter>
     );
   };
 };

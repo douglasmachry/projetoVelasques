@@ -27,14 +27,17 @@ class listaMaiorCompra extends Component {
     cpf = Number(cpf);
     return cpf;
   }
+
+  //Função que retorna informações referentes à compra única de maior valor no ano de 2016
   maiorCompra() {
     const { clientes, compras } = this.state;
     var dadosCompra = [];
-    
+
+
     var maiorCompra = compras.filter(compra => compra.data.substr(-4) === "2016")
       .sort((a, b) => b.valorTotal - a.valorTotal);
     maiorCompra = maiorCompra[0];
-    
+
     for (var value in maiorCompra) {
       maiorCompra['cliente'] = this.parseCPF(maiorCompra['cliente']);
       dadosCompra[value] = maiorCompra[value];
@@ -43,8 +46,7 @@ class listaMaiorCompra extends Component {
       .map(filtroCliente => (
         dadosCompra["nomeCliente"] = filtroCliente.nome,
         dadosCompra["cpf"] = String(filtroCliente.cpf)));
-    
-    console.log(dadosCompra);
+
     return dadosCompra;
 
 
@@ -56,24 +58,21 @@ class listaMaiorCompra extends Component {
       itens[item] = maiorCompra.itens[item];
     }
     return (
-      
-        <div>
-          <h1>Maior compra do último ano</h1>
-          <h3>Cliente: {maiorCompra.nomeCliente}</h3>
-          <p>CPF: {maiorCompra.cpf}</p>
-          <p>Data: {String(maiorCompra.data).replace(/-/g, "/")}</p>
-          <p>Valor: R$ {Number(maiorCompra.valorTotal).toFixed(2).replace(".", ",")}</p>
-          <p>Produtos:</p>
-          <ol>
-            {
 
-              itens.map(item => (
-                (<li>{item.produto} - {item.variedade}</li>)
-              ))}
-          </ol>
-
-        </div>
-      
+      <div>
+        <h1>Maior compra do último ano</h1>
+        <h3>Cliente: {maiorCompra.nomeCliente}</h3>
+        <p>CPF: {maiorCompra.cpf}</p>
+        <p>Data: {String(maiorCompra.data).replace(/-/g, "/")}</p>
+        <p>Valor: R$ {Number(maiorCompra.valorTotal).toFixed(2).replace(".", ",")}</p>
+        <p>Produtos:</p>
+        <ol>
+          {
+            itens.map(item => (
+              (<li>{item.produto} - {item.variedade}</li>)
+            ))}
+        </ol>
+      </div>
     );
   }
 }

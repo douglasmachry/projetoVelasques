@@ -26,43 +26,38 @@ class listaPorFidelidade extends Component {
     return cpf;
   }
 
-  ordenarClientes() {
+
+  //Função para recuperar os clientes e contabilizar a frequência de compras por cada cliente
+  ordenarClientesPorFidelidade() {
     const { clientes, compras } = this.state;
-    var listaOrdenadaPorCompra = [];
+    var listaOrdenadaPorFidelidade = [];
     compras.map(compra => (
       compra['cliente'] = this.parseCPF(compra.cliente)
     ));
     var listaAgrupadaPorCliente = compras.groupBy('cliente');
 
+    //Percorre as compras de cada cliente e incrementa a variável pontosFidelidade para cada compra realizada
     for (var cpf in listaAgrupadaPorCliente) {
       var comprasPorCPF = listaAgrupadaPorCliente[cpf];
-
-      var totalCompras = 0;
       var pontosFidelidade = 0;
       comprasPorCPF.map(compra => (
-        totalCompras += compra.valorTotal,
         pontosFidelidade++
       ))
       clientes.filter(nome => this.parseCPF(nome.cpf) == cpf)
         .map(filtroCliente => (
           comprasPorCPF["nomeCliente"] = filtroCliente.nome,
           comprasPorCPF["cpf"] = String(filtroCliente.cpf)));
-      totalCompras = Number(totalCompras.toFixed(2))
-      comprasPorCPF["totalCompras"] = totalCompras
+      
       comprasPorCPF["pontosFidelidade"] = pontosFidelidade
 
-      listaOrdenadaPorCompra.push(comprasPorCPF)
+      listaOrdenadaPorFidelidade.push(comprasPorCPF)
     }
-
-    listaOrdenadaPorCompra.sort((a, b) => b.totalCompras - a.totalCompras);
-
-    return listaOrdenadaPorCompra;
+    
+    return listaOrdenadaPorFidelidade;
   }
 
-
- 
   render(){
-    var listaFidelidade = this.ordenarClientes();
+    var listaFidelidade = this.ordenarClientesPorFidelidade();
     return (
       <div>
       <h1>Lista de Clientes por Fidelidade</h1>

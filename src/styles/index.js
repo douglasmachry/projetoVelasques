@@ -35,7 +35,7 @@ export default createGlobalStyle`
       cursor: pointer;
     }
     h1 {
-      color: #009cde;
+      color: #3a181c;
     }
     p.vinhoRecomendado {
       color: purple;
